@@ -619,7 +619,7 @@ module Aliyun
       # @param [Integer] expiry URL的有效时间，单位为秒，默认为60s
       # @param [Hash] parameters 附加的query参数，默认为空
       # @return [String] 用于直接访问Object的URL
-      def object_url(key, sign = true, expiry = 60, parameters = {})
+      def object_url(key, sign = true, expiry = 60, parameters = {}, opts={})
         url = @protocol.get_request_url(name, key).gsub('%2F', '/')
         query = parameters.dup
 
@@ -630,6 +630,9 @@ module Aliyun
             'date' => expires.to_s,
           }
 
+          if opts.present?
+            headers.merge!(opts)
+          end
           #query 
           if @protocol.get_sts_token
             query['security-token'] = @protocol.get_sts_token

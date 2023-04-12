@@ -27,6 +27,7 @@ module Aliyun
 
           content_md5 = headers['content-md5'] || ""
           content_type = headers['content-type'] || ""
+          content_dispostion = headers['content-disposition'] || ""
           date = headers['date']
 
           cano_headers = headers.select { |k, v| k.start_with?(HEADER_PREFIX) }
@@ -39,7 +40,7 @@ module Aliyun
           cano_res += "?#{sub_res}" unless sub_res.empty?
 
           string_to_sign =
-            "#{verb}\n#{content_md5}\n#{content_type}\n#{date}\n" +
+            "#{verb}\n#{content_md5}\n#{content_type}\n#{content_disposition}\n#{date}\n" +
             "#{cano_headers}#{cano_res}"
 
           Util.sign(key, string_to_sign)
